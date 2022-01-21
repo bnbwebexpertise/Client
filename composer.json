@@ -62,6 +62,6 @@
     "extra": {
         "branch-alias": {
             "dev-main": "11.x-dev"
-        },
+        }
     }
 }
