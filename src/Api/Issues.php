@@ -432,9 +432,12 @@ class Issues extends AbstractApi
      *
      * @return mixed
      */
-    public function showResourceLabelEvents($project_id, int $issue_iid)
+    public function showResourceLabelEvents($project_id, int $issue_iid, array $parameters = [])
     {
-        return $this->get($this->getProjectPath($project_id, 'issues/'.self::encodePath($issue_iid)).'/resource_label_events');
+        return $this->get(
+            $this->getProjectPath($project_id, 'issues/'.self::encodePath($issue_iid)).'/resource_label_events', 
+            $this->createOptionsResolver()->resolve($parameters)
+        );
     }
 
     /**
