@@ -107,11 +107,11 @@ class MergeRequestsTest extends TestCase
         $expectedArray = $this->getMultipleMergeRequestsData();
 
         $createdAfter = new \DateTime('2018-01-01 00:00:00');
-        $createdBefore = new \DateTime('2018-01-31 00:00:00');
+        $createdBefore = new \DateTime('2018-01-31 12:00:00.123+03:00');
 
         $expectedWithArray = [
-            'created_after' => $createdAfter->format(\DATE_ATOM),
-            'created_before' => $createdBefore->format(\DATE_ATOM),
+            'created_after' => '2018-01-01T00:00:00.000Z',
+            'created_before' => '2018-01-31T09:00:00.123Z',
         ];
 
         $api = $this->getApiMock();
@@ -348,6 +348,40 @@ class MergeRequestsTest extends TestCase
         ;
 
         $this->assertEquals($expectedBool, $api->removeNote(1, 2, 3));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetMergeRequestParticipants(): void
+    {
+        $expectedArray = [
+            [
+                'id' => 1,
+                'name' => 'John Doe1',
+                'username' => 'user1',
+                'state' => 'active',
+                'avatar_url' => 'http://www.gravatar.com/avatar/c922747a93b40d1ea88262bf1aebee62?s=80&d=identicon',
+                'web_url' => 'http://localhost/user1',
+            ],
+            [
+                'id' => 5,
+                'name' => 'John Doe5',
+                'username' => 'user5',
+                'state' => 'active',
+                'avatar_url' => 'http://www.gravatar.com/avatar/4aea8cf834ed91844a2da4ff7ae6b491?s=80&d=identicon',
+                'web_url' => 'http://localhost/user5',
+            ],
+        ];
+
+        $api = $this->getApiMock();
+        $api->expects($this->once())
+            ->method('get')
+            ->with('projects/1/merge_requests/2/participants')
+            ->will($this->returnValue($expectedArray))
+        ;
+
+        $this->assertEquals($expectedArray, $api->showParticipants(1, 2));
     }
 
     /**

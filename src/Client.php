@@ -17,6 +17,7 @@ namespace Gitlab;
 use Gitlab\Api\DeployKeys;
 use Gitlab\Api\Deployments;
 use Gitlab\Api\Environments;
+use Gitlab\Api\Events;
 use Gitlab\Api\Groups;
 use Gitlab\Api\GroupsBoards;
 use Gitlab\Api\GroupsEpics;
@@ -33,7 +34,13 @@ use Gitlab\Api\ProjectNamespaces;
 use Gitlab\Api\Projects;
 use Gitlab\Api\Repositories;
 use Gitlab\Api\RepositoryFiles;
+use Gitlab\Api\ResourceIterationEvents;
+use Gitlab\Api\ResourceLabelEvents;
+use Gitlab\Api\ResourceMilestoneEvents;
+use Gitlab\Api\ResourceStateEvents;
+use Gitlab\Api\ResourceWeightEvents;
 use Gitlab\Api\Schedules;
+use Gitlab\Api\Search;
 use Gitlab\Api\Snippets;
 use Gitlab\Api\SystemHooks;
 use Gitlab\Api\Tags;
@@ -68,6 +75,13 @@ class Client
     public const AUTH_HTTP_TOKEN = 'http_token';
 
     /**
+     * The job token authentication method.
+     *
+     * @var string
+     */
+    public const AUTH_HTTP_JOB_TOKEN = 'http_job_token';
+
+    /**
      * The OAuth 2 token authentication method.
      *
      * @var string
@@ -86,7 +100,7 @@ class Client
      *
      * @var string
      */
-    private const USER_AGENT = 'gitlab-php-api-client/11.5';
+    private const USER_AGENT = 'gitlab-php-api-client/11.15';
 
     /**
      * The HTTP client builder.
@@ -163,6 +177,14 @@ class Client
     }
 
     /**
+     * @return Events
+     */
+    public function events(): Events
+    {
+        return new Events($this);
+    }
+
+    /**
      * @return Groups
      */
     public function groups(): Groups
@@ -216,6 +238,46 @@ class Client
     public function issues(): Issues
     {
         return new Issues($this);
+    }
+
+    /**
+     * @return ResourceIterationEvents
+     */
+    public function resourceIterationEvents(): ResourceIterationEvents
+    {
+        return new ResourceIterationEvents($this);
+    }
+
+    /**
+     * @return ResourceLabelEvents
+     */
+    public function resourceLabelEvents(): ResourceLabelEvents
+    {
+        return new ResourceLabelEvents($this);
+    }
+
+    /**
+     * @return ResourceMilestoneEvents
+     */
+    public function resourceMilestoneEvents(): ResourceMilestoneEvents
+    {
+        return new ResourceMilestoneEvents($this);
+    }
+
+    /**
+     * @return ResourceStateEvents
+     */
+    public function resourceStateEvents(): ResourceStateEvents
+    {
+        return new ResourceStateEvents($this);
+    }
+
+    /**
+     * @return ResourceWeightEvents
+     */
+    public function resourceWeightEvents(): ResourceWeightEvents
+    {
+        return new ResourceWeightEvents($this);
     }
 
     /**
@@ -288,6 +350,14 @@ class Client
     public function repositoryFiles(): RepositoryFiles
     {
         return new RepositoryFiles($this);
+    }
+
+    /**
+     * @return Search
+     */
+    public function search(): Search
+    {
+        return new Search($this);
     }
 
     /**

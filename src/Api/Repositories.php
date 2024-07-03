@@ -144,35 +144,39 @@ class Repositories extends AbstractApi
     }
 
     /**
-     * @param int|string $project_id
-     * @param string     $tag_name
-     * @param string     $description
+     * @param int|string  $project_id
+     * @param string      $tag_name
+     * @param string      $description
+     * @param string|null $name
      *
      * @return mixed
      */
-    public function createRelease($project_id, string $tag_name, string $description)
+    public function createRelease($project_id, string $tag_name, string $description, ?string $name = null)
     {
-        return $this->post($this->getProjectPath($project_id, 'releases'), [
+        return $this->post($this->getProjectPath($project_id, 'releases'), \array_filter([
             'id' => $project_id,
             'tag_name' => $tag_name,
             'description' => $description,
-        ]);
+            'name' => $name,
+        ], fn ($v) => null !== $v));
     }
 
     /**
-     * @param int|string $project_id
-     * @param string     $tag_name
-     * @param string     $description
+     * @param int|string  $project_id
+     * @param string      $tag_name
+     * @param string      $description
+     * @param string|null $name
      *
      * @return mixed
      */
-    public function updateRelease($project_id, string $tag_name, string $description)
+    public function updateRelease($project_id, string $tag_name, string $description, ?string $name = null)
     {
-        return $this->put($this->getProjectPath($project_id, 'releases/'.self::encodePath($tag_name)), [
+        return $this->put($this->getProjectPath($project_id, 'releases/'.self::encodePath($tag_name)), \array_filter([
             'id' => $project_id,
             'tag_name' => $tag_name,
             'description' => $description,
-        ]);
+            'name' => $name,
+        ], fn ($v) => null !== $v));
     }
 
     /**
@@ -212,6 +216,7 @@ class Repositories extends AbstractApi
 
         $resolver->setDefined('path');
         $resolver->setDefined('ref_name');
+        $resolver->setDefined('author');
         $resolver->setDefined('since')
             ->setAllowedTypes('since', \DateTimeInterface::class)
             ->setNormalizer('since', $datetimeNormalizer)
@@ -307,7 +312,7 @@ class Repositories extends AbstractApi
                 $actionsOptionsResolver = new OptionsResolver();
                 $actionsOptionsResolver->setDefined('action')
                     ->setRequired('action')
-                    ->setAllowedValues('action', ['create', 'delete', 'move', 'update'])
+                    ->setAllowedValues('action', ['create', 'delete', 'move', 'update', 'chmod'])
                 ;
                 $actionsOptionsResolver->setDefined('file_path')
                     ->setRequired('file_path')
@@ -316,6 +321,9 @@ class Repositories extends AbstractApi
                 $actionsOptionsResolver->setDefined('content');
                 $actionsOptionsResolver->setDefined('encoding')
                     ->setAllowedValues('encoding', ['text', 'base64'])
+                ;
+                $actionsOptionsResolver->setDefined('execute_filemode')
+                    ->setAllowedValues('execute_filemode', [true, false])
                 ;
 
                 return \array_map(function ($action) use ($actionsOptionsResolver) {

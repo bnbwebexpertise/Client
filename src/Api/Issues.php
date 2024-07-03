@@ -37,11 +37,16 @@ class Issues extends AbstractApi
      *     @var string $labels               comma-separated list of label names, issues must have all labels to be returned
      *     @var bool   $with_labels_details  if true, response will return more details for each label
      *     @var string $milestone            the milestone title
-     *     @var string scope                 return issues for the given scope: created-by-me, assigned-to-me or all (default is created-by-me)
+     *     @var string $scope                return issues for the given scope: created-by-me, assigned-to-me or all (default is created-by-me)
      *     @var int[]  $iids                 return only the issues having the given iid
      *     @var string $order_by             return requests ordered by created_at or updated_at fields (default is created_at)
      *     @var string $sort                 return requests sorted in asc or desc order (default is desc)
+     *     @var bool   $confidential         filter confidential or public issues
      *     @var string $search               search issues against their title and description
+     *     @var int    $author_id            filter issues assigned to the specified author user id
+     *     @var int    $assignee_id          filter issues assigned to the specified assignee user id
+     *     @var int    $iteration_id         filter issues assigned to the specified iteration id
+     *     @var string $iteration_title      filter issues assigned to the specified iteration title
      * }
      *
      * @return mixed
@@ -467,6 +472,8 @@ class Issues extends AbstractApi
         ;
         $resolver->setDefined('labels');
         $resolver->setDefined('milestone');
+        $resolver->setDefined('milestone_id')
+            ->setAllowedTypes('milestone_id', 'integer');
         $resolver->setDefined('with_labels_details')
             ->setAllowedTypes('with_labels_details', 'bool')
             ->setNormalizer('with_labels_details', $booleanNormalizer)
@@ -486,13 +493,25 @@ class Issues extends AbstractApi
         $resolver->setDefined('sort')
             ->setAllowedValues('sort', ['asc', 'desc'])
         ;
+        $resolver->setDefined('confidential')
+            ->setAllowedValues('confidential', [false, true])
+        ;
         $resolver->setDefined('search');
         $resolver->setDefined('created_after');
         $resolver->setDefined('created_before');
         $resolver->setDefined('updated_after');
         $resolver->setDefined('updated_before');
+        $resolver->setDefined('author_id')
+            ->setAllowedTypes('author_id', 'integer')
+        ;
         $resolver->setDefined('assignee_id')
             ->setAllowedTypes('assignee_id', 'integer')
+        ;
+        $resolver->setDefined('iteration_id')
+            ->setAllowedTypes('iteration_id', 'integer')
+        ;
+        $resolver->setDefined('iteration_title')
+            ->setAllowedTypes('iteration_title', 'string')
         ;
         $resolver->setDefined('weight')
             ->setAllowedTypes('weight', 'integer')

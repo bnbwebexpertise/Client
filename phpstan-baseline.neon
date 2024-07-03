@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$callback of function set_error_handler expects \\(callable\\(int, string, string, int, array\\)\\: bool\\)\\|null, Closure\\(\\)\\: void given\\.$#"
+			message: "#^Parameter \\#1 \\$callback of function set_error_handler expects \\(callable\\(int, string, string, int\\)\\: bool\\)\\|null, Closure\\(\\)\\: void given\\.$#"
 			count: 1
 			path: src/Api/AbstractApi.php
 
@@ -11,9 +11,24 @@ parameters:
 			path: src/Api/AbstractApi.php
 
 		-
+			message: "#^Parameter \\#4 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 1
+			path: src/Api/AbstractApi.php
+
+		-
 			message: "#^Property Gitlab\\\\Api\\\\AbstractApi\\:\\:\\$perPage is never written, only read\\.$#"
 			count: 1
 			path: src/Api/AbstractApi.php
+
+		-
+			message: "#^PHPDoc tag @return contains generic type Http\\\\Promise\\\\Promise\\<Psr\\\\Http\\\\Message\\\\ResponseInterface\\> but interface Http\\\\Promise\\\\Promise is not generic\\.$#"
+			count: 1
+			path: src/HttpClient/Plugin/Authentication.php
+
+		-
+			message: "#^PHPDoc tag @return contains generic type Http\\\\Promise\\\\Promise\\<Psr\\\\Http\\\\Message\\\\ResponseInterface\\> but interface Http\\\\Promise\\\\Promise is not generic\\.$#"
+			count: 1
+			path: src/HttpClient/Plugin/ExceptionThrower.php
 
 		-
 			message: "#^Cannot cast mixed to string\\.$#"

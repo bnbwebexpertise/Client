@@ -5,6 +5,123 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.15.0] - UPCOMING
+
+* TBC
+
+## [11.14.0] - 2024-03-11
+
+* Add support for `php-http/cache-plugin:^2.0`
+* Add support for `'approved'` `status` in `Project::events`
+* Add support for `name` in `createRelease` and `updateRelease`
+* Add support for date filtering to `GroupsMilestones::all()`
+* Update `MergeRequests::all` to use millisecond precision for date filters
+
+## [11.13.0] - 2023-12-03
+
+* Add support for `symfony/options-resolver:^7.0`
+* Add support for `status` and `environment` in `Deployments::all`
+* Add support for `Groups::search`, `Projects::search`, and `Search::all`
+
+## [11.12.0] - 2023-10-08
+
+* Add PHP 8.3 support
+* Add `Projects::updateProtectedBranch` and `Projects::updateApprovalsConfiguration`
+* Add support for `environment_scope` in `Projects::removeVariable`
+* Add support for `filter` in `Projects::variable`
+* Add support for `author` in `Repositories::commits`
+* Add support for additional parameters in `Projects::labels` and `Groups::labels`
+
+## [11.11.1] - 2023-10-08
+
+* Fixed double encoding of job name in artifacts download
+
+## [11.11.0] - 2023-07-17
+
+* Add support for `author_id` in `Issues::all`
+* Add support for `tier` in `Environments::create`
+* Add support for `expires_at` in `Groups::addMember`
+* Add support for `include_retried` in `Jobs::pipelineBridges`
+* Add support for additional parameters in `Projects::deployment`
+* Add support for additional parameters in `Projects::forks`
+* Add support for `Events::all`
+* Add support for `Users::removeUserIdentity`
+* Add support for `MergeRequests::showParticipants`
+
+## [11.10.0] - 2023-04-30
+
+* Add support for `Packages::addGenericFile`
+* Add support for `Milestones::mergeRequests`
+* Add support for `Project::removeTrigger`
+* Add support for `Schedules::takeOwnership` and `Schedules::play`
+* Add support for `access_level` in `Projects::createProjectAccessToken`
+* Add support for `expires_at` in `Projects::addMember` and `Projects::saveMember`
+* Add support for `order_by` `version` in `Tags::all`
+* Added support for `psr/http-message` v2
+
+## [11.9.1] - 2023-04-30
+
+* Corrected upload avatar endpoint
+
+## [11.9.0] - 2023-03-06
+
+* Add PHP 8.2 support
+* Add support for group and project deploy tokens
+* Add source parameter to pipelines API
+* Add support for `Jobs::artifactByJobId`
+* Add support for `Users::usersStarredProjects`
+* Add support for `Groups::issues`
+* Add support for `Groups::iterations`
+* Add support for `Projects::iterations`
+* Add support for `Projects::projectAccessToken`
+* Add support for `Projects::pipelineTestReport`
+* Add support for `Projects::pipelineTestReportSummary`
+* Add support for `allowed_to_create` in `Projects::addProtectedTag`
+* Add support for `update_at` order by in `Projects::pipelines`
+* Added additional parameters to `Issues::all`
+* Added additional parameters to `Issues::group`
+* Added the ability to authenticate with a job token
+
+## [11.8.0] - 2022-04-24
+
+* Add support for `reviewer_id` and `wip` params in `MergeRequests::all()`
+* Add support for `GroupEpics::issues()`
+* Add support for `Projects::pipelineJobs()` and protected tags
+* Add support for the confidential filter in `Issues:all()`
+* Allow specifying params in `Wiki::showAll()`
+* Allow specifying params in `SystemHooks::create()`
+* Allow `chmod` action and `execute_filemode` attribute
+* Implement group merge requests endpoints
+* Implement event endpoints
+
+[11.8.0]: https://github.com/GitLabPHP/Client/compare/11.7.1...11.8.0
+
+## [11.7.1] - 2022-04-24
+
+* Fixed `GroupsEpic::all()` method
+* Fixed `Projects::createPipeline()` method
+
+[11.7.1]: https://github.com/GitLabPHP/Client/compare/11.7.0...11.7.1
+
+## [11.7.0] - 2022-01-24
+
+* Dropped PHP 7.2 and 7.3 support
+
+[11.7.0]: https://github.com/GitLabPHP/Client/compare/11.6.0...11.7.0
+
+## [11.6.0] - 2022-01-23
+
+* Added support for for workspace repository permissions
+* Added support for `psr/cache:^3.0`
+
+[11.6.0]: https://github.com/GitLabPHP/Client/compare/11.5.1...11.6.0
+
+## [11.5.1] - 2022-01-23
+
+* Fixed release API paths
+
+[11.5.1]: https://github.com/GitLabPHP/Client/compare/11.5.0...11.5.1
+
 ## [11.5.0] - 2021-12-26
 
 * Added support for filtering environments by state

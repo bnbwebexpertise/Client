@@ -61,6 +61,8 @@ class MergeRequests extends AbstractApi
      *     @var string             $labels         return merge requests matching a comma separated list of labels
      *     @var \DateTimeInterface $created_after  return merge requests created after the given time (inclusive)
      *     @var \DateTimeInterface $created_before return merge requests created before the given time (inclusive)
+     *     @var int                $reviewer_id    return merge requests which have the user as a reviewer with the given user id
+     *     @var bool               $wip            return only draft merge requests (true) or only non-draft merge requests (false)
      * }
      *
      * @throws UndefinedOptionsException if an option name is undefined
@@ -72,7 +74,9 @@ class MergeRequests extends AbstractApi
     {
         $resolver = $this->createOptionsResolver();
         $datetimeNormalizer = function (Options $resolver, \DateTimeInterface $value): string {
-            return $value->format('c');
+            $utc = (new \DateTimeImmutable($value->format(\DateTimeImmutable::RFC3339_EXTENDED)))->setTimezone(new \DateTimeZone('UTC'));
+
+            return $utc->format('Y-m-d\TH:i:s.v\Z');
         };
         $resolver->setDefined('iids')
             ->setAllowedTypes('iids', 'array')
@@ -136,6 +140,13 @@ class MergeRequests extends AbstractApi
                 return \count($value) === \count(\array_filter($value, 'is_int'));
             })
         ;
+        $resolver->setDefined('reviewer_id')
+            ->setAllowedTypes('reviewer_id', 'integer');
+        $resolver->setDefined('wip')
+            ->setAllowedTypes('wip', 'boolean')
+            ->addNormalizer('wip', static function ($resolver, $wip) {
+                return $wip ? 'yes' : 'no';
+            });
 
         $path = null === $project_id ? 'merge_requests' : $this->getProjectPath($project_id, 'merge_requests');
 
@@ -371,6 +382,17 @@ class MergeRequests extends AbstractApi
     public function removeDiscussionNote($project_id, int $mr_iid, string $discussion_id, int $note_id)
     {
         return $this->delete($this->getProjectPath($project_id, 'merge_requests/'.self::encodePath($mr_iid).'/discussions/'.self::encodePath($discussion_id).'/notes/'.self::encodePath($note_id)));
+    }
+
+    /**
+     * @param int|string $project_id
+     * @param int        $mr_iid
+     *
+     * @return mixed
+     */
+    public function showParticipants($project_id, int $mr_iid)
+    {
+        return $this->get($this->getProjectPath($project_id, 'merge_requests/'.self::encodePath($mr_iid)).'/participants');
     }
 
     /**
